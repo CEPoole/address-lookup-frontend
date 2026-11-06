@@ -30,7 +30,7 @@ class FrontendAppConfig @Inject()(config: Configuration, servicesConfig: Service
   val appName: String = config.get[String]("appName")
   val cacheTtl: Duration = config.get[Duration]("mongodb.ttl")
 
-  val contactFormServiceIdentifier = "AddressLookupFrontend"
+  val contactFormServiceIdentifier = "CompatibleAddressLookupFrontend"
   val feedbackUrl = "https://www.tax.service.gov.uk/contact/beta-feedback-unauthenticated?service=ALF"
 
   val addressLookupEndpoint: String = servicesConfig.baseUrl("address-lookup-frontend")

@@ -3,7 +3,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 ThisBuild / majorVersion := 2
 ThisBuild / scalaVersion := "3.3.7"
 
-val appName = "address-lookup-frontend"
+val appName = "compatible-address-lookup-frontend"
 
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
@@ -23,6 +23,7 @@ lazy val microservice = Project(appName, file("."))
     scalacOptions += "-Wconf:src=routes/.*:s",
     scalacOptions += "-Wconf:msg=unused import&src=html/.*:s"
   )
+  // This intentionally clashes with the port of address-lookup-frontend
   .settings(PlayKeys.playDefaultPort := 9028)
   .settings(CodeCoverageSettings.settings *)
 

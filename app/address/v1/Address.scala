@@ -29,7 +29,7 @@ case class Address(lines: List[String],
                    town: String,
                    postcode: String,
                    subdivision: Option[String],
-                   country: Country) {
+                   country: Country):
 
   @JsonIgnore // needed because the name starts 'is...'
   def isValid: Boolean = lines.nonEmpty && lines.size <= (if (town.isEmpty) 4 else 3)
@@ -53,27 +53,18 @@ case class Address(lines: List[String],
 
   def longestLineLength: Int = nonEmptyFields.map(_.length).max
 
-  private def limit(str: String, max: Int): String = {
+  private def limit(str: String, max: Int): String =
     var s = str
-    while (s.length > max && s.indexOf(", ") > 0) {
+    while (s.length > max && s.indexOf(", ") > 0)
       s = s.replaceFirst(", ", ",")
-    }
-    if (s.length > max) {
+    if s.length <= max then s else
       s = s.substring(0, max).trim
-      if (Address.danglingLetter.matcher(s).matches()) {
-        s = s.substring(0, s.length - 2)
-      }
+      if Address.danglingLetter.matcher(s).matches() then s = s.substring(0, s.length - 2)
       s
-    }
-    else s
-  }
 
   def truncatedAddress(maxLen: Int = Address.maxLineLength): Address =
     Address(lines.map(limit(_, maxLen)), limit(town, maxLen), postcode, subdivision, country)
-}
 
-
-object Address {
-  val maxLineLength = 35
+object Address:
+  val maxLineLength = 27
   val danglingLetter: Pattern = Pattern.compile(".* [A-Z0-9]$")
-}

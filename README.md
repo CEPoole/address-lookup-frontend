@@ -1,30 +1,13 @@
-# Address Lookup Frontend
+# Compatible Address Lookup Frontend
 
-This microservice provides a user interface for entering and editing addresses. Assistance is provided to the end-user for looking up their address from a database (via the backend service [address-lookup](https://github.com/hmrc/address-lookup)).
+This microservice provides an alternative user interface for entering and editing addresses that fall outside of standard address formats.
+It is a fork of the original `address-lookup-frontend` microservice, with additional configurability to allow for additional validation constraints.
 
-Initially, the use-case covers only UK addresses. BFPO addresses might be added soon. The roadmap includes support for international addresses.
-
-## Functional Overview
-
-### Summary
-
-During the utilization of `address-lookup-frontend`, four parties are involved:
-
-* A frontend service in the tax platform (the **"calling service"** here).
-* The user-agent (i.e. web browser) and the user who operates it (the **"user"** here).
-* The `address-lookup-frontend` (the **"frontend"** here).
-* The backend `address-lookup`, containing large national datasets of addresses (the **"backend"** here).
-
-The integration process from the perspective of the **calling service** consists of the following steps:
-
-* _Initialize_ a **journey** by issuing a request to `POST /api/init` where the message body is a **journey configuration** JSON message (see below). You should receive a `202 Accepted` response with a `Location` header the value of which is the **"on ramp"** URL to which the **"user"** should be redirected.
-* _Redirect_ the **"user"** to the **"on ramp"** URL.
-* The **"user"** completes the journey, following which they will be redirected to the **"off ramp"** URL (which is configured as part of the journey) with an appended `id=:addressId` URL parameter.
-* Using the value of the `id` parameter, you can retrieve the user's confirmed address as JSON by issuing a request to `GET /api/confirmed?id=:addressId`. 
+For documentation of the service pattern, see [address-lookup-frontend](https://github.com/hmrc/address-lookup-frontend)
 
 ### Initializing a Journey
 
-The first action by any **calling service** must be to **"initialize"** an address lookup **journey** in order to obtain an "on ramp" URL to which the **"user"** is then redirected. 
+The first action by any **calling service** must be to **"initialize"** a compatible address lookup **journey** in order to obtain an "on ramp" URL to which the **"user"** is then redirected. 
 
 Initialization generates an ID which is utilized both to facilitate subsequent retrieval of the **"user's"** confirmed address *and* to prevent arbitrary access to and potential abuse of `address-lookup-frontend` by malicious **"users"**.
 
@@ -331,10 +314,10 @@ length requirement.
 
 | Field name                | Description                                                                            | Optional/Required | Type    | Default value |
 |---------------------------|----------------------------------------------------------------------------------------|-------------------|---------|---------------|
-| `line1MaxLength`          | Max Length for Line 1 of the Address (must be between 35 and 255)                      | Optional          | Int     | 255           |
-| `line2MaxLength`          | Max Length for Line 2 of the Address (must be between 35 and 255)                      | Optional          | Int     | 255           |
-| `line3MaxLength`          | Max Length for Line 3 of the Address (must be between 35 and 255)                      | Optional          | Int     | 255           |
-| `townMaxLength`           | Max Length for Town/City of the Address (must be between 35 and 255)                   | Optional          | Int     | 255           |
+| `line1MaxLength`          | Max Length for Line 1 of the Address (must be between 27 and 255)                      | Optional          | Int     | 255           |
+| `line2MaxLength`          | Max Length for Line 2 of the Address (must be between 27 and 255)                      | Optional          | Int     | 255           |
+| `line3MaxLength`          | Max Length for Line 3 of the Address (must be between 27 and 255)                      | Optional          | Int     | 255           |
+| `townMaxLength`           | Max Length for Town/City of the Address (must be between 18 and 255)                   | Optional          | Int     | 255           |
 | `mandatoryFields`         | List of fields that are mandatory for the address to be valid                          | Optional          | Model   | None          |
 | `maxLengthErrorMessages`  | Custom error messages to display when user input exceeds max length for address fields | Optional          | Model   | None          |
 | `showOrganisationName`    | Whether or not to show the organisation name field on the manual address entry page    | Optional          | Boolean | True          |

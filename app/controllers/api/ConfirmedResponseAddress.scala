@@ -20,18 +20,16 @@ import address.v2.Country
 import play.api.libs.json.{Format, Json}
 
 case class ConfirmedResponseAddress(auditRef: String,
-                              id: Option[String] = None,
-                              address: ConfirmedResponseAddressDetails =
-                              ConfirmedResponseAddressDetails())
+                                    id: Option[String] = None,
+                                    address: ConfirmedResponseAddressDetails =
+                                    ConfirmedResponseAddressDetails())
 
 case class ConfirmedResponseAddressDetails(organisation: Option[String] = None, lines: Option[Seq[String]] = None, postcode: Option[String] = None, country: Option[Country] = None, poBox: Option[String] = None)
 
-object ConfirmedResponseAddressDetails {
+object ConfirmedResponseAddressDetails:
   implicit val countryFormat: Format[Country] = Json.format[Country]
   implicit val confirmableAddressDetailsFormat: Format[ConfirmedResponseAddressDetails] =
      Json.format[ConfirmedResponseAddressDetails]
-}
 
-object ConfirmedResponseAddress {
+object ConfirmedResponseAddress:
   implicit val confirmableAddressFormat: Format[ConfirmedResponseAddress] = Json.format[ConfirmedResponseAddress]
-}

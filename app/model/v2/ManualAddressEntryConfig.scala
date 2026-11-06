@@ -34,14 +34,16 @@ object ManualAddressEntryConfig {
 
   val defaultMax: Int = 255
   private val minimumValueOfMaxLengthConfig: Int = 27
+  private val minimumValueOfMaxLengthConfigForTown: Int = 18
 
-  val constraints: Reads[Int] = min(minimumValueOfMaxLengthConfig) ~> max(defaultMax)
+  private val constraints: Reads[Int] = min(minimumValueOfMaxLengthConfig) ~> max(defaultMax)
+  private val townConstraints: Reads[Int] = min(minimumValueOfMaxLengthConfigForTown) ~> max(defaultMax)
 
   implicit val reads: Reads[ManualAddressEntryConfig] = (
     (__ \ "line1MaxLength").readWithDefault[Int](defaultMax)(constraints) and
       (__ \ "line2MaxLength").readWithDefault[Int](defaultMax)(constraints) and
       (__ \ "line3MaxLength").readWithDefault[Int](defaultMax)(constraints) and
-      (__ \ "townMaxLength").readWithDefault[Int](defaultMax)(constraints) and
+      (__ \ "townMaxLength").readWithDefault[Int](defaultMax)(townConstraints) and
       (__ \ "mandatoryFields").readNullable[MandatoryFieldsConfigModel] and
       (__ \ "maxLengthErrorMessages").readNullable[MaxLengthErrorMessages] and
       (__ \ "showOrganisationName").readWithDefault[Boolean](true)

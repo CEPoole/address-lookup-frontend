@@ -25,10 +25,10 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressLookupFrontendErrorHandler @Inject()(val messagesApi: MessagesApi,
-                                                  implicit val frontendAppConfig: FrontendAppConfig,
-                                                  val ec: ExecutionContext,
-                                                  error_template: views.html.error_template) extends FrontendErrorHandler {
+class ErrorHandler @Inject()(val messagesApi: MessagesApi,
+                             implicit val frontendAppConfig: FrontendAppConfig,
+                             val ec: ExecutionContext,
+                             error_template: views.html.error_template) extends FrontendErrorHandler {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] = {
     val messages = implicitly[Messages]
